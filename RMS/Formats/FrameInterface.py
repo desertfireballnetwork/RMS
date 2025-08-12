@@ -1459,7 +1459,7 @@ class InputTypeImages(object):
         self.fripon_header = None
         self.cabernet_status = False
 
-        img_types = ['.png', '.jpg', '.jpeg', '.bmp', '.fit', '.fits', '.tif']
+        img_types = ['.png', '.jpg', '.jpeg', '.bmp', '.fit', '.fit.gz', '.fits', '.fits.gz', '.tif']
 
         # Add raw formats if rawpy is installed
         if 'rawpy' in sys.modules:
@@ -1979,7 +1979,7 @@ class InputTypeImages(object):
 
 
         # Loads a non-FRIPON FITS image
-        elif current_img_file.lower().endswith('.fits'):
+        elif current_img_file.lower().endswith('.fits')  or current_img_file.lower().endswith('.fits.gz'):
             
             # Load the data from a fits file
             with open(os.path.join(self.dir_path, current_img_file), 'rb') as f:
@@ -2233,11 +2233,10 @@ class InputTypeDFN(InputType):
         # This type of input probably won't have any calstars files
         self.require_calstars = False
 
+        img_types = ['.png', '.jpg', '.jpeg', '.bmp', '.tif', '.fits', '.fits.gz']
         if 'rawpy' in sys.modules:
             ### Find images in the given folder ###
-            img_types = ['.png', '.jpg', '.jpeg', '.bmp', '.tif', '.fits', '.nef', '.cr2']
-        else:
-            img_types = ['.png', '.jpg', '.jpeg', '.bmp', '.tif', '.fits']
+            img_types += ['.nef', '.cr2']
 
         self.beginning_datetime = beginning_time
 
