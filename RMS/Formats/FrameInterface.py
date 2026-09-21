@@ -1468,6 +1468,7 @@ class InputTypeImages(object):
         self.img_list = []
 
         ### Find images in the given folder ###
+        print('Looking for files with extensions: ' + str(img_types))
         for file_name in sorted(os.listdir(self.dir_path)):
 
             # Check if the file ends with support file extensions
@@ -1479,7 +1480,7 @@ class InputTypeImages(object):
                     if ('flat' in file_name.lower()) or ('dark' in file_name.lower()) \
                             or ('bias' in file_name.lower()) or ('grid' in file_name.lower()):
                         continue
-
+                    print('adding ' + file_name)
                     self.img_list.append(file_name)
                     break
 
@@ -1929,7 +1930,7 @@ class InputTypeImages(object):
 
         # Load an .NEF file
         if current_img_file.lower().endswith('.nef') or current_img_file.lower().endswith('.cr2'):
-            
+
             # .nef files will not be brought here if rawpy is not installed
 
             # Load the raw image
@@ -1937,7 +1938,7 @@ class InputTypeImages(object):
 
 
         # Load a FRIPON fit file
-        if current_img_file.lower().endswith('.fit'):
+        elif current_img_file.lower().endswith('.fit'):
 
             # Load the data from a fits file
             with open(os.path.join(self.dir_path, current_img_file), 'rb') as f:
@@ -1989,7 +1990,7 @@ class InputTypeImages(object):
                 frame = fits_file[0].data
 
                 # # Flip image vertically
-                # frame = np.flipud(frame)
+                frame = np.flipud(frame)
 
         # Load a normal image
         else:
@@ -2443,7 +2444,7 @@ def detectInputTypeFolder(input_dir, config, beginning_time=None, fps=None, skip
     """
 
     ### Find images in the given folder ###
-    img_types = ['.png', '.jpg', '.jpeg', '.bmp', '.fit', '.tif', '.fits']
+    img_types = ['.png', '.jpg', '.jpeg', '.bmp', '.fit', '.tif', '.fits', '.fit.gz', '.fits.gz']
 
     if 'rawpy' in sys.modules:
         img_types += ['.nef', '.cr2']
