@@ -896,6 +896,11 @@ class Platepar(object):
 
         ### ###
 
+        # return the fit residuals
+        parameters = [self.RA_d / 360, self.dec_d / 90, self.pos_angle_ref / 360, abs(self.F_scale)]
+        parameters += list(self.x_poly_fwd)
+        return np.rad2deg(_calcSkyResidualsAstroAndDistortionRadial(np.array(parameters), self, jd, catalog_stars, img_stars)**0.5)
+
     def parseLine(self, f):
         """Read next line, split the line and convert parameters to float.
         @param f: [file handle] file we want to read
