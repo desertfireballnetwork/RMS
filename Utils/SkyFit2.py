@@ -52,6 +52,14 @@ import pyximport
 pyximport.install(setup_args={'include_dirs': [np.get_include()]})
 from RMS.Astrometry.CyFunctions import subsetCatalog, equatorialCoordPrecession
 
+    
+try:
+    from astropy.table import Table
+    import pandas as pd
+    ECSV_writer = 'astropy'
+except ImportError:
+    print("astropy or pandas not available, defaulting to old writer")
+    ECSV_writer = 'classic'
 
 class QFOVinputDialog(QtWidgets.QDialog):
 
@@ -6644,12 +6652,9 @@ class PlateTool(QtWidgets.QMainWindow):
 
     
     def saveECSV(self):
-        try:
-            from astropy.table import Table
-            import pandas as pd
+        if ECSV_writer == 'astropy':
             self.saveECSV_astropy()
-        except ImportError:
-            print("astropy or pandas not available, defaulting to old writer")
+        else:
             self.saveECSV_old()
 
 
